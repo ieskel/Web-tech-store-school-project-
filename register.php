@@ -1,23 +1,11 @@
 <?php
-$DATABASE_HOST = 'mysql.cc.puv.fi';
-$DATABASE_USER = 'e1900909';
-$DATABASE_PASS = 'TYk7ebgwms5Z';
-$DATABASE_NAME = 'e1900909_ComaElectronix';
-
-$link = mysqli_connect($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
-if ( mysqli_connect_errno() ) {
-	// Näyttää vikailmoitukset
-	exit('Failed to connect to MySQL: ' . mysqli_connect_error());
-}
-if ($link == false) {
-    die("VIRHE: Yhdistys epäonnistui. " . mysqli_connect_error());
-}
+require "config.php";
  
-// Define variables and initialize with empty values
+// Defining empty variables
 $email = $firstname = $lastname = $phonenumber = $postalcode = $address = $password = $confirm_password = "";
 $email_err = $firstname_err = $lastname_err = $phonenumber_err = $postalcode_err = $address_err = $password_err = $confirm_password_err = "";
  
-// Processing form data when form is submitted
+// Main process starts here
 if($_SERVER["REQUEST_METHOD"] == "POST"){
  
     // Validate username
