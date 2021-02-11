@@ -107,7 +107,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 <body>
     <div class="wrapper">
         <h2>Kirjaudu</h2>
-        <p>Täytä tiedot kirjautuaksesi.</p>
+        <p>Täytä tiedot kirjautuaksesi. (email: test@test.com, pw: Salasana1 for testing purposes)</p>
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
             <div class="form-group <?php echo (!empty($email_err)) ? 'has-error' : ''; ?>">
                 <label>Sähköposti</label>

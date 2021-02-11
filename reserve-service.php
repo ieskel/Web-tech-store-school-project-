@@ -12,44 +12,6 @@ $id = $_SESSION['id'];
 
 require "config.php";
 
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-
-    // Main process starts here
-        $hinta = 50;
-
-        if (isset($_POST['huoltoKuljetusPalvelu'])) {
-            $huoltoKuljetusPalvelu = filter_var($huoltoKuljetusPalvelu, FILTER_SANITIZE_STRING);
-            $huoltoKuljetusPalvelu = trim($_POST["huoltoKuljetusPalvelu"]);
-            $hinta = $hinta + 25;
-        }
-        if (isset($_POST['huoltoLisatakuu'])) {
-            $huoltoLisatakuu = filter_var($huoltoLisatakuu, FILTER_SANITIZE_STRING);
-            $huoltoLisatakuu = trim($_POST["huoltoLisatakuu"]);
-            $hinta = $hinta + 25;
-        }
-        if (isset($_POST['huoltoVarausAika'])) {
-            $huoltoVarausAika = filter_var($huoltoVarausAika, FILTER_SANITIZE_STRING);
-            $huoltoVarausAika = trim($_POST["huoltoVarausAika"]);
-            
-        }
-        
-        
-            // Prepare an insert statement
-            $sql = "INSERT INTO `Huolto`(`huoltoKuljetuspalvelu`, `huoltoLisatakuu`, huoltoVarausAika, ttID, huoltoHinta, asID) VALUES ($huoltoKuljetusPalvelu,$huoltoLisatakuu, $huoltoVarausAika, 0, $hinta, $id)";
-         
-            if ($link->query($sql) === TRUE) {
-              $response ="Huoltovaraus lisätty!";
-              
-            } else {
-              $response ="Ongelma lisäyksessä " . $link->error;
-            }
-
-            echo json_encode($response);
-
-        // Close connection
-        mysqli_close($link);
-}
 ?>
 
 
@@ -78,13 +40,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       <div class="collapse navbar-collapse" id="navbarCollapse">
         <ul class="navbar-nav ml-auto">
           <li class="nav-item">
-            <a href="#home" class="nav-link">Tilitoiminnot</a>
+            <a href="#home" class="nav-link">Varaa</a>
           </li>
           <li class="nav-item">
             <a href="#explore-head-section" class="nav-link">Tuotteet</a>
           </li>
           <li class="nav-item">
-          <a href="logout.php" text="white"><button class="btn btn-success">Kirjaudu ulos</button></a>
+          <a href="welcome.php" text="white"><button class="btn btn-success">Tili</button></a>
           </li>
         </ul>
       </div>
@@ -93,40 +55,43 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <!--- HOME SECTION --->
 <header id="home-section">
-    <div class="dark-overlay">
-        <div class="home-inner container" style="margin-top: 5rem">
-            <div class="row" >
-                        <div class="card text-center" style="margin-left: 5rem; background: #5cb85c ;">
-                        <h4 >Varaa, peru ja osta</h4>
-
-                                <div class="card-body">
-                                    <a href="reserve-service.php" class="btn btn btn-outline-light btn-secondary">Varaa huolto</a>
-                                </div>
-                                <div class="card-body">
-                                    <a href="open-services.php" class="btn btn btn-outline-light btn-secondary">Avoimet huollot</a>
-                                </div>
-                        </div>
-                        <div class="card text-center" style="margin-left: 5rem;  background: #5cb85c ;">
-                            <h4>Historia</h4>
-                                <div class="card-body">
-                                    <a href="order-history.html" class="btn btn btn-outline-light btn-secondary">Tilaushistoria</a>
-                                </div>
-                                <div class="card-body">
-                                    <a href="service-history.html" class="btn btn btn-outline-light btn-secondary">Huoltohistoria</a>
-                                </div>
-                        </div>
-                        <div class="card text-center" style="margin-left: 5rem; background: #5cb85c ;">
-                            <h4>Päivitä</h4>
-                                <div class="card-body">
-                                    <a href="update-customer.php" class="btn btn btn-outline-light btn-secondary">Päivitä asiakastietoja</a>
-                                </div>
-                                <div class="card-body">
-                                    <a href="reset-password.php" class="btn btn btn-outline-light btn-secondary">Vaihda salasana</a>
-                                </div>
-                        </div>
+  <div class="dark-overlay">
+    <div class="home-inner container ">
+      <div class="row">
+        <div class="col-lg-6">
+          <div class="card text-center card-form">
+            <div class="card-body">
+              <h3>Varaa huolto</h3>
+                <form>
+                    <!--<form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post"> -->
+                  <div class="form-group">
+                  <div>
+                      <p>Kommentti (min 10, max 255 merkkiä)</p>
+                      <input type="textarea" minlength="10" maxlength="255" id="reserve-comment">
+                    </div>   
+                    <div>
+                      <p>Lisätakuu? (+25 €, ei pakollinen)</p>
+                      <input type="checkbox" value="on" id="reserve-extra-warranty">
+                    </div>
+                    <div>
+                      <p>Kuljetuspalvelu? (+25 €, ei pakollinen)</p>
+                      <input type="checkbox" value="on" id="reserve-delivery">
+                    </div>
+                  </div>
+                  <div>
+                      <p>Valitse päivä (Jos et valitse, nykyinen päivämäärä tulee ajaksi)</p>
+                      <input type="date" id="reserve-date" min="2021-02-11" max="">
+                    </div>
+                  <div class="form-group">       
+                      <br><input id="btnReserveService" class="btn btn-dark" value="Varaa" data-toggle="modal" data-target="#status-modal">
+                  </div>
+              </form>
             </div>
+          </div>
         </div>
+      </div>
     </div>
+  </div>
 </header>
 
 <!--- EXPLORE HEAD --->
@@ -181,7 +146,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
             <div class="mt-auto">
               <p class="card-product-id" style="color:lightgray" value="<?php echo $record['tuoteID']; ?>">ID: <?php echo $record['tuoteID']; ?></p>
-              <a href="product.php?id=<?php echo $record['tuoteID']; ?>"><button class="btn btn-outline-light btn-block">Osta</button></a>     
+              <a href="product.php?id=<?php echo $record['tuoteID']; ?>"><button class="btn btn-outline-light btn-block">Osta</button></a> 
             </div>
         </div>
       </div>
@@ -190,37 +155,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </div>
 </section>
 
-
-<!---CONTACT MODAL --->
-<div class="modal fade text-dark" id="contactModal" method="post">
-  <div class="modal-dialog">
+<div class="modal" tabindex="-1" role="dialog" id="status-modal">
+  <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Anna palautetta</h5>
-        <button class="close fas fa-times" data-dismiss="modal"></button>
+        <h5 class="modal-title" style="color:black">Tila</h5>
+        <button type="button" class="close" data-dismiss="modal">
+          <span aria-hidden="true">&times;</span>
+        </button>
       </div>
       <div class="modal-body">
-        <form>
-          <div class="form-group">
-            <label for="name">Nimi</label>
-            <input id="feedback-name" name="feedback_name" placeholder="Nimi" type="text" class="form-control">
-            <span id="help-block-feedback-name" class="help-block"></span>
-          </div>
-          <div class="form-group">
-            <label for="email">Sähköposti</label>
-            <input id="feedback-email" name="feedback_email" placeholder="Sähköposti" type="email" class="form-control">
-            <span id="help-block-feedback-email" class="help-block"></span>
-          </div>
-          <div class="form-group">
-            <label for="message">Palaute</label>
-            <textarea name="feedback" placeholder="Palaute" id="feedback" class="form-control"></textarea>
-            <span id="help-block-feedback" class="help-block"></span>
-          </div>
-        </form>
+        <p style="color:black" id="modal-text"></p>
       </div>
       <div class="modal-footer">
-        <button id="btnSubmitFeedback" class="btn btn-success btn-block">Submit</button>
-        <span id="feedback-success" class="help-block"></span>
+        <button type="button" class="btn btn-success" data-dismiss="modal">OK</button>
       </div>
     </div>
   </div>
@@ -251,6 +199,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     crossorigin="anonymous"></script>
 
   <script>
+    //set min date for new service
+    var today = new Date();
+    var dd = today.getDate();
+    var mm = today.getMonth()+1; //January is 0!
+    var yyyy = today.getFullYear();
+    if(dd<10){
+            dd='0'+dd
+        } 
+        if(mm<10){
+            mm='0'+mm
+        } 
+
+    today = yyyy+'-'+mm+'-'+dd;
+    document.getElementById("reserve-date").setAttribute("min", today);
+
     //initialize ScrollSpy
     $('body').scrollspy({target: '#main-nav'});
     
@@ -270,7 +233,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     });
   </script>
   <script src="reserve-service.js"></script>
-  <script src="feedback.js"></script>
 </body>
 
 </html>

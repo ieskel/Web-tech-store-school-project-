@@ -1,0 +1,137 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp"
+    crossorigin="anonymous">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB"
+    crossorigin="anonymous">
+  <link rel="stylesheet" href="css/style.css">
+  <title>Coma Electronix</title>
+</head>
+  <!-- Sivuston määrittely alkaa tästä -->
+<body data-spy="scroll" data-target="#main-nav" id="home">
+  <nav class="navbar navbar-expand-sm navbar-dark fixed-top" id="main-nav" >
+    <div class="container">
+      <a href="frontpage.php" class="navbar-brand">Coma Electronix</a>
+      <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a href="welcome.php" text="white"><button class="btn btn-success">Tili</button></a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+<!--- HOME SECTION --->
+<header id="home-section">
+  <div class="dark-overlay">
+    <div class="home-inner container ">
+      <div class="services">
+        <!--
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="order-history-dropdown-button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Valitse huolto
+        </button>
+        <div id="order-history-dropdown" class="dropdown-menu" aria-labelledby="order-history-dropdown-button"></div>
+       -->
+       <div id="services" class="form-select form-select-lg mb-3" aria-label="Default select example">
+        <select id="service-history-dropdown">
+        </select>
+      </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-6">
+          <div class="card text-center card-form">
+            <div class="card-body">
+              <h3>Huolto <h3 id="huoltoID"></h3> </h3>
+              <form>
+                <div class="form-group">
+                  <span>Hinta</span>
+                  <input placeholder="Laskun hinta. Valitse listasta huolto" disabled type="text" id="laskuHinta" class="form-control">
+                </div>
+                <div class="form-group">
+                  <span>Tila</span>
+                  <input placeholder="Laskun tila. Valitse listasta huolto" disabled  type="text" id="laskuMaksettu" class="form-control">
+                </div> 
+                <div class="form-group">
+                  <span>Huollon kuvaus</span>
+                    <input placeholder="Huollon kuvaus. Valitse listasta huolto" disabled type="text" id="huoltoKuvaus" class="form-control">
+                </div>
+                <div class="form-group">
+                  <span>Varausaika</span>
+                  <input placeholder="Lasku varausaika. Valitse listasta huolto" disabled type="text" id="huoltoVarausAika" class="form-control">
+                </div>  
+                <div class="form-group">
+                  <span>Eräpäivä</span>
+                  <input placeholder="Laskun eräpäivä. Valitse listasta huolto" disabled type="text" id="laskuErapaiva" class="form-control">
+                </div>          
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+
+
+<!---FOOTER--->
+<footer id="main-footer" class="bg-dark">
+  <div class="container">
+    <div class="row">
+      <div class="col text-center py4">
+        <h3>Coma Electronix Oy <br>
+        <i class="fas fa-copyright"></i>
+        <span id="footer-year"></span></h3>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+  <!-- Sivuston määrittely päättyy tähän -->
+
+  <script src="http://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T"
+    crossorigin="anonymous"></script>
+
+  <script>
+    //initialize ScrollSpy
+    $('body').scrollspy({target: '#main-nav'});
+    
+
+    //smooth scrolling
+    $("#main-nav a").on('click', function (event) {
+      if (this.hash !== "") {
+        event.preventDefault();
+        const hash = this.hash;
+
+        $('html, body').animate({
+          scrollTop: $(hash).offset().top
+        }, 800, function () {
+          window.location.hash = hash;
+        });
+      }
+    });
+    
+
+    // sets the current year into the page footer
+    document.getElementById("footer-year").innerHTML = new Date().getFullYear();
+  </script>
+  <script src="service-history.js"></script>
+</body>
+
+</html>
